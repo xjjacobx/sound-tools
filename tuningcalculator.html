@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Equal-Tempered Tuning Calculator</title>
+
+  <style type="text/css">
+
+    @import url('https://fonts.googleapis.com/css?family=Chivo+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+
+    
+    body {
+      margin: 20px;
+      font-family: Chivo Mono;
+    }
+
+    p {
+      font-style: italic;
+      color: white;
+      background: rgba(40,40,40);
+    }
+
+    div {
+      width: 500px;
+    }
+
+    button {
+      font-family: chivo mono;
+      background: rgba(40, 40, 40);
+      color: rgba(250,250,220);
+      border-radius: 5%;
+      border-style: none;
+      filter:drop-shadow(4px 2px 3px #888888);
+    }
+
+    input {
+      font-family: chivo mono;
+      background: #white;
+      color: ;
+      border-style: none;
+      filter:drop-shadow(4px 2px 3px #888888);
+    }
+
+    textarea {
+      padding: 12px;
+      font-family: roboto mono;
+      background: rgba(100,100,100, .5);
+      color: rgba(250,250,220);
+      border-color: lightgray;
+      border-radius: 2%;
+      font-size: 13pt;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 1px #000000;
+    }
+
+  </style>
+
+</head>
+<body>
+  <div>
+  <h1>Equal-Tempered Tuning Calculator</h1>
+  <p>Enter the number of intervals per octave:</p>
+  <input id="intervals" type="number" min="1" max="127" value="12">
+  <p>Enter the frequency of C3:</p>
+  <input id="frequency" type="number" min="1" value="130.81278265">
+  <button onclick="calculateTuning()">Calculate Tuning</button>
+  <h2>Tuning</h2>
+  <textarea id="tuning" rows="15" cols="40"></textarea>
+</div>
+<br/>
+
+  <script>
+
+    
+    /* use javascript and HTML to code an equal-tempered tuning calculator that allows the user to input a number of intervals each octave is divided into and prints a set of frequencies from the tuning into a textfield. add a number slider for the user to dictate what frequency is equal to C3. print no more than 127 frequencies */
+
+
+   function calculateTuning() {
+  // Get the number of intervals per octave and the frequency of C3 from the inputs
+  var intervals = document.getElementById("intervals").value;
+  var frequency = document.getElementById("frequency").value;
+
+  // Calculate the ratio between two consecutive notes in the tuning
+  var ratio = Math.pow(2, 1 / intervals);
+
+  // Initialize an array to store the frequencies in the tuning
+  var tuning = [];
+
+  // Calculate the frequencies for each note in the tuning
+  for (var i = -48; i < 80; i++) {
+    // Calculate the frequency of the current note
+    var noteFrequency = frequency * Math.pow(ratio, i);
+
+    // Add the frequency to the array
+    tuning.push(noteFrequency);
+  }
+
+  // Initialize a string to store the output
+  var output = "";
+
+  // Iterate over the MIDI keyboard values from 0 to 127
+  for (var i = 0; i < 128; i++) {
+    // Concatenate the MIDI keyboard value and the corresponding frequency to the output string
+    output += i + "\t" + tuning[i] + "\n";
+  }
+
+  // Get the element to display the tuning
+  var tuningElement = document.getElementById("tuning");
+
+  // Set the value of the element to the calculated tuning
+  tuningElement.value = output;
+}
+
+  </script>
+</body>
+</html>
